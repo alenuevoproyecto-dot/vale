@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffe6cc">
+<title>Dos años de vos</title>
+<meta name="description" content="Un caminito por todo lo que vivimos.">
+<meta property="og:title" content="Dos años de vos">
+<meta property="og:description" content="Un caminito por todo lo que vivimos.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-12 -12 24 24'%3E%3Cpath d='M0 8C-11 0-9-10 0-4 9-10 11 0 0 8Z' fill='%23e0607e'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400;1,6..72,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #3a2433;
+    --ink-soft: rgba(58, 36, 51, .72);
+    --paper: #fffaf5;
+    --night-ink: #f3ecf7;
+    --night-card: #221f4a;
+    --rose: #e0607e;
+    --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --gap: clamp(96px, 26vw, 150px);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; color: var(--ink); font-family: var(--sans); background: #17163a; }
+
+  /* ---------- cielo: de la mañana a la noche ---------- */
+  .sky {
+    position: relative; overflow-x: clip;
+    background: linear-gradient(180deg,
+      #ffeedd 0%, #ffdcc0 9%, #fcc6ad 20%, #f4b0ab 31%, #e5a0b4 42%,
+      #c690bd 53%, #9a82bb 62%, #6c64a6 71%, #403d80 80%, #26245a 89%, #17163a 100%);
+  }
+
+  /* ---------- portada ---------- */
+  .hero {
+    position: relative; z-index: 2;
+    min-height: 100vh; min-height: 100svh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 56px 24px 24px;
+  }
+  .hero::before {
+    content: ""; position: absolute; left: 50%; top: 44%; width: min(120vw, 760px); aspect-ratio: 1;
+    transform: translate(-50%, -50%); border-radius: 50%; z-index: -1;
+    background: radial-gradient(circle, rgba(255, 255, 255, .75) 0%, rgba(255, 244, 226, .35) 38%, transparent 66%);
+  }
+  .eyebrow { font: 600 12px/1 var(--sans); letter-spacing: .26em; text-transform: uppercase; color: var(--ink-soft); }
+  .hero h1 {
+    font-family: var(--serif); font-weight: 600; font-size: clamp(56px, 15vw, 120px);
+    line-height: .92; letter-spacing: -.015em; margin: 20px 0 22px;
+  }
+  .hero h1 em { display: block; font-weight: 400; font-style: italic; }
+  .hero p { font: italic 400 clamp(19px, 4.8vw, 25px)/1.4 var(--serif); color: var(--ink-soft); max-width: 26ch; margin: 0 auto; text-wrap: balance; }
+  .hint {
+    margin-top: 48px; display: inline-flex; flex-direction: column; align-items: center; gap: 8px;
+    font: 600 11px/1 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .hint svg { animation: bob 2.2s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(7px); } }
+  .js .hero > * { opacity: 0; transform: translateY(18px); animation: rise 1.1s cubic-bezier(.2, .75, .2, 1) forwards; }
+  .js .hero > :nth-child(2) { animation-delay: .25s; }
+  .js .hero > :nth-child(3) { animation-delay: .6s; }
+  .js .hero > :nth-child(4) { animation-delay: 1.1s; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  /* ---------- el caminito ---------- */
+  .trail { position: relative; max-width: 1000px; margin: 0 auto; padding: 0 18px; }
+  .trail > svg { position: absolute; left: 0; top: 0; z-index: 0; pointer-events: none; overflow: visible; }
+  .ghost { fill: none; stroke: rgba(255, 255, 255, .45); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1 11; }
+  .seg { fill: none; stroke: url(#trailInk); stroke-width: 3.2; stroke-linecap: round; stroke-dasharray: 12 10; visibility: hidden; }
+  .walker path { fill: var(--rose); stroke: #fff; stroke-width: 1.6; }
+  .walker .beat { transform-box: fill-box; transform-origin: center; animation: beat 1.4s ease-in-out infinite; }
+  @keyframes beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.22); } 30% { transform: scale(1); } 45% { transform: scale(1.14); } }
+
+  .node { position: relative; z-index: 1; }
+  .start { width: 14px; height: 14px; margin: 0 auto; border-radius: 50%; background: #fff; box-shadow: 0 0 0 6px rgba(255, 255, 255, .35); }
+
+  .stop { width: var(--w); margin-top: calc(var(--gap) * var(--gm, 1)); margin-left: calc((100% - var(--w)) * var(--x, .5)); }
+  .stop.p { --w: min(68vw, 330px); }
+  .stop.l { --w: min(86vw, 500px); }
+  .stop.v { --w: min(62vw, 290px); }
+  @media (min-width: 760px) { .stop.p { --w: 340px; } .stop.l { --w: 480px; } .stop.v { --w: 300px; } }
+
+  .card {
+    margin: 0; background: var(--paper); border-radius: 22px; padding: 10px 10px 18px;
+    box-shadow: 0 16px 36px rgba(90, 40, 70, .18), 0 2px 6px rgba(90, 40, 70, .08);
+    transform: rotate(var(--r, 0deg));
+  }
+  .card.bare { padding-bottom: 10px; }
+  .ph { display: block; width: 100%; height: auto; border-radius: 14px; background: #f1e2da; cursor: zoom-in; }
+  .card figcaption { font: italic 400 clamp(18px, 4.6vw, 21px)/1.34 var(--serif); padding: 14px 8px 0; text-wrap: pretty; }
+  .night .card { background: var(--night-card); color: var(--night-ink); box-shadow: 0 16px 44px rgba(0, 0, 0, .38); }
+  .night .ph { background: #2e2a5c; }
+
+  .vwrap { position: relative; }
+  .vwrap video { cursor: default; }
+  .sound {
+    position: absolute; right: 10px; bottom: 10px; display: inline-flex; align-items: center; gap: 7px;
+    border: 0; border-radius: 999px; padding: 9px 14px 9px 11px; cursor: pointer;
+    background: rgba(20, 18, 45, .62); color: #fff; font: 600 12px/1 var(--sans); letter-spacing: .02em;
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  }
+  .sound:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  .sign {
+    width: max-content; max-width: min(88vw, 520px); margin: calc(var(--gap) * 1.25) auto 0;
+    text-align: center; padding: 22px 30px 24px; border-radius: 28px;
+    background: rgba(255, 250, 245, .9); box-shadow: 0 12px 30px rgba(90, 40, 70, .14);
+  }
+  .sign .mark { display: block; margin: 0 auto 10px; width: 22px; height: 22px; }
+  .sign h2 { margin: 0; font: italic 400 clamp(28px, 7.4vw, 38px)/1.1 var(--serif); text-wrap: balance; }
+  .sign p { margin: 10px 0 0; font: 500 14px/1.5 var(--sans); color: var(--ink-soft); text-wrap: balance; }
+  .sign.night { background: rgba(34, 31, 74, .92); color: var(--night-ink); }
+  .sign.night p { color: rgba(243, 236, 247, .75); }
+
+  .finish { width: 64px; height: 64px; margin: calc(var(--gap) * 1.3) auto 0; }
+  .finish svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0 18px rgba(255, 160, 190, .65)); }
+  .finish path { fill: var(--rose); stroke: #fff; stroke-width: 1.2; }
+
+  /* aparecer al deslizar */
+  .js .stop .card { opacity: 0; transform: translateY(48px) rotate(calc(var(--r, 0deg) * -2)) scale(.94); transition: opacity 1s ease, transform 1.15s cubic-bezier(.2, .75, .2, 1); }
+  .js .stop.in .card { opacity: 1; transform: rotate(var(--r, 0deg)); }
+  .js .stop figcaption { opacity: 0; transform: translateY(8px); transition: opacity .9s ease .35s, transform .9s ease .35s; }
+  .js .stop.in figcaption { opacity: 1; transform: none; }
+  .js .sign, .js .finish, .js .end > * { opacity: 0; transform: translateY(24px); transition: opacity 1s ease, transform 1.1s cubic-bezier(.2, .75, .2, 1); }
+  .js .sign.in, .js .finish.in, .js .end.in > * { opacity: 1; transform: none; }
+  .js .end.in > :nth-child(2) { transition-delay: .25s; }
+  .js .end.in > :nth-child(3) { transition-delay: .5s; }
+  .js .end.in > :nth-child(4) { transition-delay: .75s; }
+  .js .end.in > :nth-child(5) { transition-delay: 1.1s; }
+  .js .end.in > :nth-child(6) { transition-delay: 1.5s; }
+
+  /* ---------- final ---------- */
+  .end { position: relative; z-index: 1; max-width: 580px; margin: 0 auto; padding: 36px 26px 110px; text-align: center; color: var(--night-ink); }
+  .end h2 { margin: 0 0 26px; font: italic 400 clamp(36px, 9vw, 54px)/1.08 var(--serif); text-wrap: balance; }
+  .end p { margin: 0 0 18px; font: 400 clamp(19px, 4.8vw, 22px)/1.6 var(--serif); text-wrap: pretty; }
+  .end .sig { margin: 40px 0 0; font: italic 500 clamp(34px, 8vw, 46px)/1 var(--serif); }
+  .again {
+    margin-top: 64px; border: 1px solid rgba(243, 236, 247, .35); background: transparent; color: var(--night-ink);
+    border-radius: 999px; padding: 12px 20px; font: 600 12px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer;
+  }
+  .again:hover { background: rgba(243, 236, 247, .1); }
+
+  .stars { position: absolute; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0;
+    -webkit-mask-image: linear-gradient(transparent, #000 35%); mask-image: linear-gradient(transparent, #000 35%); }
+  .stars i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; animation: twinkle 3.6s ease-in-out infinite; }
+  @keyframes twinkle { 50% { opacity: .25; } }
+
+  /* ---------- foto en grande ---------- */
+  .lightbox { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 18px;
+    background: rgba(16, 14, 34, .9); opacity: 0; transition: opacity .3s ease; cursor: zoom-out; }
+  .lightbox.open { opacity: 1; }
+  .lightbox[hidden] { display: none; }
+  .lightbox img { max-width: 100%; max-height: 100%; border-radius: 12px; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .hero > *, .js .stop .card, .js .stop figcaption, .js .sign, .js .finish, .js .end > * { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+    .js .stop .card { transform: rotate(var(--r, 0deg)) !important; }
+    .hint svg, .walker .beat, .stars i { animation: none; }
+  }
+</style>
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<main class="sky" id="sky">
+
+  <header class="hero">
+    <div class="eyebrow">Feliz aniversario, Vale</div>
+    <h1>Dos años <em>de vos</em></h1>
+    <p>Te armé un caminito con nuestros momentos. Seguilo hasta el final.</p>
+    <div class="hint">deslizá
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </header>
+
+  <section class="trail" id="trail" aria-label="Nuestro caminito">
+    <svg id="trailSvg" aria-hidden="true">
+      <defs>
+        <linearGradient id="trailInk" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="1000">
+          <stop offset="0" stop-color="#e0607e"/>
+          <stop offset=".45" stop-color="#d4507f"/>
+          <stop offset=".7" stop-color="#f3b6cf"/>
+          <stop offset="1" stop-color="#fff0c8"/>
+        </linearGradient>
+      </defs>
+      <path class="ghost" id="ghost"/>
+      <g id="segs"></g>
+      <g class="walker" id="walker" style="visibility:hidden">
+        <g class="beat"><path d="M0 7C-10 0-8-9 0-4 8-9 10 0 0 7Z"/></g>
+      </g>
+    </svg>
+    <div class="node start" aria-hidden="true"></div>
+    <!-- las fotos y frases se agregan acá desde HISTORIA (más abajo) -->
+  </section>
+
+  <section class="end" id="end">
+    <h2>Gracias, Valentinita</h2>
+    <p>Por elegirme todos los días, en cada país y en cada versión de nosotros.</p>
+    <p>Por reírte conmigo en los días buenos y no soltarme en los difíciles.</p>
+    <p class="sig">Te quiero ♡</p>
+    <button class="again" type="button" id="again">Volver al principio</button>
+  </section>
+
+  <div class="stars" id="stars" aria-hidden="true"></div>
+</main>
+
+<div class="lightbox" id="lightbox" hidden></div>
+
+<script>
+/* =========================================================
+   NUESTRA HISTORIA — para cambiar una frase, editala acá.
+   o: 'p' = foto vertical, 'l' = foto horizontal, 'v' = video
+   ========================================================= */
+const HISTORIA = [
+  { cap: 'Donde empezó todo', sub: 'Dos mochilas, un working holiday y vos.' },
+  { img: 'img_20241208_083508.jpg', o: 'p', t: 'Del otro lado del mundo, te encontré a vos.' },
+  { img: 'img_20241211_131253.jpg', o: 'p', t: '' },
+  { img: 'img_20241211_131303.jpg', o: 'p', t: '' },
+  { img: 'img_20241211_151848.jpg', o: 'p', t: 'Mate en mano y el mundo por delante.' },
+  { img: 'img_20241212_102613.jpg', o: 'p', t: 'El río más turquesa, y yo mirándote a vos.' },
+  { img: 'img_20250103_204018.jpg', o: 'l', t: 'Casa es donde estás vos.' },
+  { img: 'img_20250122_171051.jpg', o: 'p', t: 'Hasta ir al súper con vos es un plan.' },
+  { img: 'img_20250203_wa0024.jpg', o: 'p', t: 'Mi peluquera favorita. La única que acepto.' },
+  { img: 'img_20250206_120233.jpg', o: 'p', t: 'Jornadas largas, chaleco naranja y una fuerza que admiro.' },
+  { img: 'img_20250318_190617.jpg', o: 'p', t: '' },
+  { img: 'img_20250420_162616.jpg', o: 'p', t: '' },
+  { img: 'img_20250421_172252.jpg', o: 'p', t: '' },
+  { img: 'img_20250421_173738.jpg', o: 'p', t: 'Y ese abrazo que me arregla cualquier día.' },
+  { img: 'img_20250425_124129.jpg', o: 'p', t: 'Sin mapa, pero con vos.' },
+  { img: 'img_20250511_171208.jpg', o: 'l', t: 'Nuestro primer auto.' },
+
+  { img: 'img_20250716_161107.jpg', o: 'p', t: 'La cordillera, el frío y vos dándome calor.' },
+  { img: 'img_20250829_163846.jpg', o: 'p', t: 'Arriba de todo, abrazados.' },
+  { img: 'img_20250830_070247.jpg', o: 'p', t: 'Valijas listas. Próxima parada: Australia.' },
+  { img: 'img_20250830_224235.jpg', o: 'p', t: 'Un vidrio que no viste, unos puntos y casi perdemos el vuelo… pero llegamos juntos.' },
+
+  { cap: 'Nuestro lugar ahora', sub: 'Cambiamos de país, no de equipo.' },
+  { img: 'img_20250910_174729.jpg', o: 'p', t: 'Empezar de cero otra vez, pero de la mano.' },
+  { img: 'img_20250912_070021.jpg', o: 'p', t: 'Primer trabajo en Australia.' },
+  { img: 'img_20250912_070030.jpg', o: 'p', t: 'La astronauta más linda de toda la fábrica.' },
+  { img: 'img_20250918_145253.jpg', o: 'p', t: 'Pizza en el pasto: la felicidad es así de simple.' },
+  { img: 'img_0002.jpg', o: 'p', t: 'Tu abrazo, mi lugar en el mundo.' },
+  { img: 'img_0004.jpg', o: 'p', t: 'Y los besos sorpresa, que nunca me alcanzan.' },
+  { video: 'anio-nuevo.mp4', poster: 'anio-nuevo-poster.jpg', o: 'v', t: 'Esperando las doce en el pasto, con vos. No necesito otra fiesta.' },
+  { img: 'img_0235.jpg', o: 'p', t: 'Primer día del año: arena, sol y vos.' },
+  { img: 'img_0237.jpg', o: 'l', t: '' },
+  { img: 'img_0407.jpg', o: 'l', t: 'Desayuno donde sea con vos: un planazo.' },
+  { img: 'img_0431.jpg', o: 'l', t: 'Arena blanca, la camioneta y ningún apuro.' },
+  { img: 'img_0459.jpg', o: 'p', t: 'El mar más azul, y vos abrazada a mí.' },
+  { img: 'img_0533.jpg', o: 'p', t: 'Que todos los atardeceres sean así.' },
+  { img: 'img_0740.jpg', o: 'p', t: 'No importa a qué muelle lleguemos, mientras sea con vos.' },
+  { img: 'img_1119.jpg', o: 'l', t: '' },
+  { img: 'img_1139.jpg', o: 'p', t: 'Un bosque encantado, pero la magia la ponés vos.' },
+  { img: 'img_1145.jpg', o: 'l', t: 'Brindo por nosotros y por todo lo que viene.' },
+  { img: 'img_1228.jpg', o: 'p', t: 'Vos, el mate y el mar. Mi lugar favorito.' },
+];
+
+(function () {
+  const NS = 'http://www.w3.org/2000/svg';
+  const sky = document.getElementById('sky');
+  const trail = document.getElementById('trail');
+  const svg = document.getElementById('trailSvg');
+  const segsG = document.getElementById('segs');
+  const ghost = document.getElementById('ghost');
+  const walker = document.getElementById('walker');
+  const ink = document.getElementById('trailInk');
+  const starsEl = document.getElementById('stars');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // posiciones que van zigzagueando (0 = izquierda, 1 = derecha)
+  const X = [0.1, 0.9, 0.3, 0.84, 0.04, 0.62, 0.96, 0.22, 0.74, 0.0, 0.5, 0.92];
+  const R = [-2.2, 1.8, -1.1, 2.4, -1.7, 1.3, -2.6, 0.9, -1.4, 2.1];
+  const GM = [1, 1.25, 0.9, 1.35, 1.1, 0.95, 1.2, 1.05];
+  const SIZE = { p: [1200, 1600], l: [1600, 1200], v: [720, 1280] };
+  const MARK = '<svg class="mark" viewBox="-12 -12 24 24" aria-hidden="true"><path d="M0 8C-11 0-9-10 0-4 9-10 11 0 0 8Z" fill="#e0607e"/></svg>';
+
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  // ---------- armar las paradas ----------
+  let k = 0;
+  const frag = document.createDocumentFragment();
+  HISTORIA.forEach((it) => {
+    const n = document.createElement('div');
+    if (it.cap) {
+      n.className = 'node sign';
+      n.innerHTML = MARK + '<h2>' + esc(it.cap) + '</h2>' + (it.sub ? '<p>' + esc(it.sub) + '</p>' : '');
+    } else {
+      const [w, h] = SIZE[it.o];
+      n.className = 'node stop ' + it.o;
+      n.style.setProperty('--x', X[k % X.length]);
+      n.style.setProperty('--r', R[k % R.length] + 'deg');
+      n.style.setProperty('--gm', GM[k % GM.length]);
+      const media = it.video
+        ? '<div class="vwrap"><video class="ph" src="video/' + it.video + '" poster="video/' + it.poster + '" width="' + w + '" height="' + h + '" muted loop playsinline preload="metadata"></video>' +
+          '<button class="sound" type="button" aria-pressed="false">' + speaker(false) + '<span>Activar sonido</span></button></div>'
+        : '<img class="ph" src="fotos/' + it.img + '" width="' + w + '" height="' + h + '" alt="" decoding="async"' + (k < 2 ? '' : ' loading="lazy"') + '>';
+      n.innerHTML = it.t
+        ? '<figure class="card">' + media + '<figcaption>' + esc(it.t) + '</figcaption></figure>'
+        : '<figure class="card bare">' + media + '</figure>';
+      k++;
+    }
+    frag.appendChild(n);
+  });
+  const fin = document.createElement('div');
+  fin.className = 'node finish';
+  fin.innerHTML = '<svg viewBox="-12 -12 24 24" aria-hidden="true"><path d="M0 8C-11 0-9-10 0-4 9-10 11 0 0 8Z"/></svg>';
+  frag.appendChild(fin);
+  trail.appendChild(frag);
+
+  function speaker(on) {
+    return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/>' +
+      (on ? '<path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/>' : '<path d="m22 9-6 6M16 9l6 6"/>') + '</svg>';
+  }
+
+  // ---------- dibujar el caminito ----------
+  let segs = [];
+  let trailTop = 0;
+  let startPt = null;
+  let endPt = null;
+  let starsFor = 0;
+
+  function layout() {
+    const nodes = Array.from(trail.querySelectorAll('.node'));
+    const W = trail.clientWidth;
+    const H = trail.offsetHeight;
+    svg.setAttribute('width', W);
+    svg.setAttribute('height', H);
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    ink.setAttribute('y2', H);
+
+    const pts = nodes.map((n) => ({ x: n.offsetLeft + n.offsetWidth / 2, t: n.offsetTop, b: n.offsetTop + n.offsetHeight }));
+    segsG.textContent = '';
+    segs = [];
+    let ghostD = '';
+    for (let i = 0; i < pts.length - 1; i++) {
+      const a = pts[i], c = pts[i + 1];
+      const y0 = i === 0 ? (a.t + a.b) / 2 : a.b + 4;
+      const y1 = i === pts.length - 2 ? (c.t + c.b) / 2 : c.t - 4;
+      const m = Math.max((y1 - y0) / 2, 8);
+      // el caminito se abre hacia el lado con más espacio, para que serpentee
+      const dir = (a.x + c.x) / 2 < W / 2 ? 1 : -1;
+      const sw = i === 0 || i === pts.length - 2 ? 0 : W * 0.17 * dir;
+      const d = 'M' + a.x + ',' + y0 + ' C' + (a.x + sw) + ',' + (y0 + m) + ' ' + (c.x + sw) + ',' + (y1 - m) + ' ' + c.x + ',' + y1;
+      ghostD += d + ' ';
+      const p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', d);
+      p.setAttribute('class', 'seg');
+      segsG.appendChild(p);
+      const L = p.getTotalLength();
+      const S = 60;
+      const ys = [];
+      for (let s = 0; s <= S; s++) ys.push(p.getPointAtLength((L * s) / S).y);
+      segs.push({ p, L, y0, y1, ys, S, state: -1 });
+    }
+    ghost.setAttribute('d', ghostD);
+    startPt = { x: pts[0].x, y: (pts[0].t + pts[0].b) / 2 };
+    endPt = { x: pts[pts.length - 1].x, y: (pts[pts.length - 1].t + pts[pts.length - 1].b) / 2 };
+    trailTop = trail.getBoundingClientRect().top + window.scrollY;
+
+    // de día o de noche según dónde cae cada parada en el cielo
+    const skyH = sky.offsetHeight;
+    const trailInSky = trail.offsetTop;
+    nodes.forEach((n) => {
+      const mid = trailInSky + n.offsetTop + n.offsetHeight / 2;
+      n.classList.toggle('night', mid / skyH > 0.68);
+    });
+    placeStars(skyH);
+    update();
+  }
+
+  function lenAt(s, y) {
+    const ys = s.ys;
+    let lo = 0, hi = s.S;
+    while (hi - lo > 1) {
+      const mid = (lo + hi) >> 1;
+      if (ys[mid] < y) lo = mid; else hi = mid;
+    }
+    const span = ys[hi] - ys[lo] || 1;
+    const f = Math.min(Math.max((y - ys[lo]) / span, 0), 1);
+    return (s.L * (lo + f)) / s.S;
+  }
+
+  function dashFor(len) {
+    const D = 12, G = 10, P = D + G;
+    const n = Math.floor(len / P);
+    const parts = [];
+    for (let i = 0; i < n; i++) parts.push(D, G);
+    parts.push(Math.min(len - n * P, D), 1e6);
+    return parts.join(' ');
+  }
+
+  function placeWalker(pt) {
+    if (!pt) { walker.style.visibility = 'hidden'; return; }
+    walker.style.visibility = 'visible';
+    walker.setAttribute('transform', 'translate(' + pt.x + ',' + pt.y + ')');
+  }
+
+  function update() {
+    if (!segs.length) return;
+    const y = reduce ? Infinity : window.scrollY + window.innerHeight * 0.62 - trailTop;
+    let tip = null;
+    let lastFull = null;
+    for (const s of segs) {
+      const st = y >= s.y1 ? 2 : y <= s.y0 ? 0 : 1;
+      if (st === 2) {
+        if (s.state !== 2) { s.p.style.strokeDasharray = ''; s.p.style.visibility = 'visible'; }
+        lastFull = s;
+      } else if (st === 0) {
+        if (s.state !== 0) s.p.style.visibility = 'hidden';
+      } else {
+        const len = lenAt(s, y);
+        s.p.style.visibility = 'visible';
+        s.p.style.strokeDasharray = dashFor(len);
+        tip = s.p.getPointAtLength(len);
+      }
+      s.state = st;
+    }
+    if (!tip) tip = lastFull ? (lastFull === segs[segs.length - 1] ? null : lastFull.p.getPointAtLength(lastFull.L)) : startPt;
+    placeWalker(tip);
+  }
+
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; update(); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  let lastW = 0, pending = false;
+  function relayout() {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => { pending = false; layout(); });
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(relayout).observe(trail);
+  window.addEventListener('resize', () => { if (window.innerWidth !== lastW) { lastW = window.innerWidth; relayout(); } });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+  window.addEventListener('load', relayout);
+
+  // ---------- estrellas ----------
+  function placeStars(skyH) {
+    const top = Math.round(skyH * 0.66);
+    starsEl.style.top = top + 'px';
+    if (starsFor) return;
+    starsFor = 1;
+    let seed = 7;
+    const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+    let html = '';
+    for (let i = 0; i < 140; i++) {
+      const sz = rnd() < 0.15 ? 3 : rnd() < 0.5 ? 2 : 1.4;
+      html += '<i style="left:' + (rnd() * 100).toFixed(2) + '%;top:' + (Math.pow(rnd(), 0.7) * 100).toFixed(2) + '%;width:' + sz + 'px;height:' + sz + 'px;opacity:' + (0.45 + rnd() * 0.55).toFixed(2) + ';animation-delay:' + (rnd() * 3.6).toFixed(2) + 's"></i>';
+    }
+    starsEl.innerHTML = html;
+  }
+
+  // ---------- aparecer al deslizar ----------
+  const revealables = trail.querySelectorAll('.stop, .sign, .finish');
+  const endEl = document.getElementById('end');
+  if (reduce || !('IntersectionObserver' in window)) {
+    revealables.forEach((n) => n.classList.add('in'));
+    endEl.classList.add('in');
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+    revealables.forEach((n) => io.observe(n));
+    io.observe(endEl);
+  }
+
+  // ---------- video: se reproduce solo cuando aparece ----------
+  trail.querySelectorAll('video').forEach((v) => {
+    const btn = v.parentElement.querySelector('.sound');
+    btn.addEventListener('click', () => {
+      v.muted = !v.muted;
+      if (!v.muted) { v.currentTime = 0; v.play().catch(() => {}); }
+      btn.setAttribute('aria-pressed', String(!v.muted));
+      btn.innerHTML = speaker(!v.muted) + '<span>' + (v.muted ? 'Activar sonido' : 'Sonido activado') + '</span>';
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((es) => {
+        es.forEach((e) => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); });
+      }, { threshold: 0.4 }).observe(v);
+    }
+  });
+
+  // ---------- ver la foto en grande ----------
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.createElement('img');
+  lbImg.alt = '';
+  lb.appendChild(lbImg);
+  function closeLb() {
+    lb.classList.remove('open');
+    document.documentElement.style.overflow = '';
+    setTimeout(() => { lb.hidden = true; lbImg.removeAttribute('src'); }, 300);
+  }
+  trail.addEventListener('click', (e) => {
+    const img = e.target.closest('img.ph');
+    if (!img) return;
+    lbImg.src = img.currentSrc || img.src;
+    lb.hidden = false;
+    document.documentElement.style.overflow = 'hidden';
+    requestAnimationFrame(() => lb.classList.add('open'));
+  });
+  lb.addEventListener('click', closeLb);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !lb.hidden) closeLb(); });
+
+  document.getElementById('again').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+  layout();
+})();
+</script>
+</body>
+</html>
